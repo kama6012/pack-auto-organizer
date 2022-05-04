@@ -33,9 +33,9 @@ app.get('/', (req, res) => {
 				.then(dev=>{
 					zip.generateAsync({type:"blob"}).then(content => {
 						res.type(content.type)
+						const hash = crypto.createHash('sha1').update(new Uint8Array(content.arrayBuffer)).digest('hex');
+						res.setHeader( 'hash', hash );
 						content.arrayBuffer().then((buf) => {
-							const hash = crypto.createHash('sha1').update(Buffer.from(buf)).digest('hex');
-							res.setHeader( 'hash', hash );
 							res.send(Buffer.from(buf));
 						})
 					})
