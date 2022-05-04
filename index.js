@@ -12,6 +12,7 @@ const app = express()
 const port = process.env.PORT || 5000
 
 app.get('/gen/:UUID', (req, res) => {
+		console.log("generating pack of "+req.params.UUID)
 		let zip = JSZip();
 		fetch('https://api.github.com/repos/kama6012/texturepack/contents/MyPack/MyPack.zip?ref=main',{
 			headers: {
