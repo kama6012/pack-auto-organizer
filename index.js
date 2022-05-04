@@ -1,7 +1,10 @@
 const express = require('express')
 const fs = require('fs')
 const fetch = require('cross-fetch')
+const buffer = require("buffer");
+globalThis.Blob = buffer.Blob;
 const JSZip = require('jszip')
+JSZip.support.blob = true;
 const app = express()
 const port = process.env.PORT || 5000
 
