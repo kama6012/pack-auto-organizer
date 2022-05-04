@@ -15,29 +15,30 @@ app.get('/', (req, res) => {
     .then(buffer => buffer.toString('base64'))
     .then(skin =>{
         zip.file("assets/minecraft/textures/skin.png", skin, {base64: true});
-    })
-    fetch('https://api.github.com/repos/kama6012/texturepack/contents/MyPack/MyPack.zip?ref=main',{
-      headers: {
-        authorization: '${{ secrets.apikey }}',
-        accept: "application/vnd.github.v3+json"
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      let content = JSON.stringify(data['content'])
-      content = content.replace(/\"/g, "").replace(/\\n/g, "");
-      zip.loadAsync(content, {base64: true})
-      .then(dev => {
-        zip.generateAsync({type:"blob"}).then(content => {
-            console.log(content)
-            res.type(content.type)
-            content.arrayBuffer().then((buf) => {
-                res.send(Buffer.from(buf))
-            })
+    }).then(dev => {
+        fetch('https://api.github.com/repos/kama6012/texturepack/contents/MyPack/MyPack.zip?ref=main',{
+          headers: {
+            authorization: '${{ secrets.apikey }}',
+            accept: "application/vnd.github.v3+json"
+          }
         })
-      })
+        .then(response => response.json())
+        .then(data => {
+          let content = JSON.stringify(data['content'])
+          content = content.replace(/\"/g, "").replace(/\\n/g, "");
+          zip.loadAsync(content, {base64: true})
+          .then(dev => {
+            zip.generateAsync({type:"blob"}).then(content => {
+                console.log(content)
+                res.type(content.type)
+                content.arrayBuffer().then((buf) => {
+                    res.send(Buffer.from(buf))
+                })
+            })
+          })
+        })
+        .catch(error => console.error('通信に失敗しました', error));
     })
-    .catch(error => console.error('通信に失敗しました', error));
 })
 
 app.listen(port, () => {
