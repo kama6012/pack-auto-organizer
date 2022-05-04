@@ -48,8 +48,12 @@ app.get('/gen/:UUID', (req, res) => {
 
 app.get('/send/:UUID', (req, res) => {
 	console.log("send pack of " + req.params.UUID)
-	res.type("application/zip")
-	res.sendFile("/tmp/565d64224b444734a22eca9ac6039ceb.zip")
+	fs.readFile("/tmp/565d64224b444734a22eca9ac6039ceb.zip", (err, result) => {
+			if (err) throw err;
+			const u8 = new Uint8Array( result.buffer );
+			res.type("application/zip");
+			res.send(Buffer.from(u8));
+	})
 })
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`)
