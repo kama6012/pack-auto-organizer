@@ -26,7 +26,7 @@ app.get('/gen/:UUID', (req, res) => {
 			content = content.replace(/\"/g, "").replace(/\\n/g, "");
 			zip.loadAsync(content, {base64: true})
 			.then(dev => {
-				fetch('https://crafatar.com/skins/565d64224b444734a22eca9ac6039ceb')
+				fetch('https://crafatar.com/skins/'+req.params.UUID)
 				.then(response => response.buffer())
 				.then(buffer => buffer.toString('base64'))
 				.then(skin =>{
@@ -38,7 +38,7 @@ app.get('/gen/:UUID', (req, res) => {
 						fs.mkdir('/tmp', { recursive: true }, (err) => {
 							if (err) throw err;
 						});
-						fs.writeFileSync("/tmp/565d64224b444734a22eca9ac6039ceb.zip", Buffer.from(content))
+						fs.writeFileSync("/tmp/" + req.params.UUID + ".zip", Buffer.from(content))
 						const hash = crypto.createHash('sha1').update(new Uint8Array(content)).digest('hex');
 						res.send(hash);
 					})
@@ -49,7 +49,7 @@ app.get('/gen/:UUID', (req, res) => {
 
 app.get('/send/:UUID', (req, res) => {
 	console.log("send pack of " + req.params.UUID)
-	fs.readFile("/tmp/565d64224b444734a22eca9ac6039ceb.zip", (err, result) => {
+	fs.readFile("/tmp/" + req.params.UUID + ".zip", (err, result) => {
 			if (err) throw err;
 			const u8 = new Uint8Array( result.buffer );
 			res.type("application/zip");
