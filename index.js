@@ -37,7 +37,7 @@ app.get('/gen/:UUID', (req, res) => {
 						fs.mkdir('/tmp', { recursive: true }, (err) => {
 							if (err) throw err;
 						});
-						fs.writeFileSync("/tmp/" + "565d64224b444734a22eca9ac6039ceb" + ".zip", Buffer.from(content))
+						fs.writeFileSync("/tmp/565d64224b444734a22eca9ac6039ceb.zip", Buffer.from(content))
 						const hash = crypto.createHash('sha1').update(new Uint8Array(content)).digest('hex');
 						res.send(hash);
 					})
