@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
             content.arrayBuffer().then((buf) => {
               shasum.update(Buffer.from(buf));
               let hash = shasum.digest('hex');
+              res.setHeader( 'hash', hash );
               res.send(Buffer.from(buf));
             })
           })
