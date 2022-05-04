@@ -31,13 +31,11 @@ app.get('/', (req, res) => {
 						zip.file("assets/minecraft/textures/skin.png", skin, {base64: true})
 				})
 				.then(dev=>{
-					zip.generateAsync({type:"blob"}).then(content => {
-						res.type(content.type)
-						const hash = crypto.createHash('sha1').update(new Uint8Array(content.arrayBuffer)).digest('hex');
+					zip.generateAsync({type:"arraybuffer"}).then(content => {
+						res.type("application/zip")
+						const hash = crypto.createHash('sha1').update(new Uint8Array(content)).digest('hex');
 						res.setHeader( 'hash', hash );
-						content.arrayBuffer().then((buf) => {
-							res.send(Buffer.from(buf));
-						})
+						res.send(Buffer.from(content));
 					})
 				})
 			})
