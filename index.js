@@ -39,8 +39,12 @@ app.get('/gen/:UUID', (req, res) => {
 							if (err) throw err;
 						});
 						fs.writeFileSync("/tmp/" + req.params.UUID + ".zip", Buffer.from(content))
-						res.type("application/zip");
-						res.send(Buffer.from(Uint8Array.from(content)));
+						fs.readFile("/tmp/" + req.params.UUID + ".zip", (err, result) => {
+							if (err) throw err;
+							const u8 = new Uint8Array( result.buffer );
+							res.type("application/zip");
+							res.send(Buffer.from(u8));
+						})
 					})
 				})
 			})
