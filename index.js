@@ -39,7 +39,7 @@ app.get('/gen/:UUID', (req, res) => {
 							if (err) throw err;
 						});
 						fs.writeFileSync("/tmp/" + req.params.UUID + ".zip", Buffer.from(content))
-						res.send(hash);
+						res.send();
 					})
 				})
 			})
