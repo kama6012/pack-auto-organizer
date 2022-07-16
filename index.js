@@ -39,7 +39,6 @@ app.get('/gen/:UUID', (req, res) => {
 							if (err) throw err;
 						});
 						fs.writeFileSync("/tmp/" + req.params.UUID + ".zip", Buffer.from(content))
-						const hash = crypto.createHash('sha1').update(new Uint8Array(content)).digest('hex');
 						res.send(hash);
 					})
 				})
