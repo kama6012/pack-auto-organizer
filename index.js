@@ -56,5 +56,5 @@ app.get('/send/:UUID', (req, res) => {
 	})
 })
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`)
+	console.log(`test app listening on port ${port}`)
 })
